@@ -153,22 +153,6 @@
     #budget-percent { font-size:14px !important; }
     #budget-spent, #budget-left { font-size:10px !important; }
     #total-jpy, #rate-display { font-size:12px !important; }
-  
-    /* 行程日期／必買推薦分類／準備分類固定於主標題下方 */
-    #date-picker,
-    #shop-category-tabs,
-    #plan-icon-nav{
-      position: sticky;
-      top: 64px;
-      z-index: 24;
-      background: rgba(253,251,247,.96);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-    #date-picker{ padding-top: 6px; padding-bottom: 6px; }
-    #shop-category-tabs{ padding: 8px 2px; margin-left:-2px; margin-right:-2px; }
-    #plan-icon-nav{ top:64px; }
-
   </style>
 </head>
 <body class="pb-24 max-w-md mx-auto relative min-h-screen border-x border-sand/60 shadow-2xl">
@@ -207,25 +191,17 @@
       <div id="bookings-list" class="space-y-4">
 
         <div class="bg-card rounded-2xl p-4 shadow-soft border border-sand">
-          <div class="flex items-center justify-between gap-3 cursor-pointer" onclick="toggleBookingCredentialList()">
-            <div class="min-w-0">
-              <div class="text-xs font-bold text-wood">
-                <i class="fa-solid fa-folder-open text-torii mr-1"></i>旅遊憑證
-              </div>
-              <div id="booking-file-count" class="text-[10px] font-bold text-skyBlue mt-1">上傳0檔</div>
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <div class="text-xs font-bold text-wood"><i class="fa-solid fa-file-pdf text-torii mr-1"></i>旅遊憑證 PDF</div>
+              <div class="text-[9px] text-gray-400 mt-1">可將機票、住宿、門票等 PDF 憑證儲存在此裝置。</div>
             </div>
-            <div class="flex items-center gap-2 shrink-0">
-              <label onclick="event.stopPropagation()" class="px-3 py-2 rounded-xl bg-sakuraLight text-torii text-[10px] font-bold btn-press cursor-pointer whitespace-nowrap">
-                <i class="fa-solid fa-upload mr-1"></i>上傳
-                <input id="booking-pdf-input" type="file" accept="application/pdf,.pdf,image/*" multiple class="hidden">
-              </label>
-              <i id="booking-file-chevron" class="fa-solid fa-chevron-down text-gray-300 text-xs"></i>
-            </div>
+            <label class="px-3 py-2 rounded-xl bg-sakuraLight text-torii text-[10px] font-bold btn-press cursor-pointer whitespace-nowrap">
+              <i class="fa-solid fa-upload mr-1"></i>上傳 PDF
+              <input id="booking-pdf-input" type="file" accept="application/pdf,.pdf" multiple class="hidden">
+            </label>
           </div>
-          <div id="booking-pdf-panel" class="hidden mt-3 pt-3 border-t border-sand">
-            <div class="text-[9px] text-gray-400 mb-2">可存放機票、住宿、門票等 PDF 或圖片憑證；點檔案即可開啟。</div>
-            <div id="booking-pdf-list" class="space-y-2"></div>
-          </div>
+          <div id="booking-pdf-list" class="space-y-2 mt-3"></div>
         </div>
 
         <!-- 去程航班 -->
@@ -326,7 +302,7 @@
 
     <!-- 2. 行程 (Schedule) -->
     <section id="page-schedule" class="page-content space-y-4">
-      <div class="flex gap-2 overflow-x-auto no-scrollbar py-1 shadow-sm" id="date-picker"></div>
+      <div class="flex gap-2 overflow-x-auto no-scrollbar py-1" id="date-picker"></div>
       <div id="group-picker" class="hidden grid grid-cols-2 gap-2"></div>
       <div class="text-[10px] text-gray-400 text-center">💡 長按行程可重設時間，灰色為已安排，碰左右框切換日期。</div>
       <div class="relative timeline-line space-y-4 pt-1" id="timeline-container"></div>
@@ -414,7 +390,7 @@
 
     <!-- 4. 必買推薦 -->
     <section id="page-shopping" class="page-content space-y-4">
-      <div class="flex gap-2 overflow-x-auto no-scrollbar shadow-sm" id="shop-category-tabs">
+      <div class="flex gap-2 overflow-x-auto no-scrollbar" id="shop-category-tabs">
         <button onclick="filterShopTab('藥品')" data-shop-tab="藥品" title="藥品" aria-label="藥品" class="shop-tab active w-10 h-10 shrink-0 rounded-xl text-sm bg-skyBlue text-white border border-skyBlue btn-press"><i class="fa-solid fa-pills"></i></button>
         <button onclick="filterShopTab('伴手禮')" data-shop-tab="伴手禮" title="伴手禮" aria-label="伴手禮" class="shop-tab w-10 h-10 shrink-0 rounded-xl text-sm bg-card text-wood border border-sand btn-press"><i class="fa-solid fa-gift"></i></button>
         <button onclick="filterShopTab('美食')" data-shop-tab="美食" title="美食" aria-label="美食" class="shop-tab w-10 h-10 shrink-0 rounded-xl text-sm bg-card text-wood border border-sand btn-press"><i class="fa-solid fa-utensils"></i></button>
@@ -441,27 +417,27 @@
     <!-- 6. 準備 -->
     <section id="page-planning" class="page-content space-y-4">
       <div class="flex justify-between items-center bg-card p-2 rounded-2xl border border-sand shadow-soft overflow-x-auto no-scrollbar gap-1" id="plan-icon-nav">
-        <button onclick="switchPlanCategory('必備')" data-plan-cat="必備" class="plan-icon-btn active flex flex-col items-center p-2 rounded-xl text-skyBlue btn-press min-w-[55px]">
+        <button onclick="switchPlanCategory('必備')" class="plan-icon-btn active flex flex-col items-center p-2 rounded-xl text-skyBlue btn-press min-w-[55px]">
           <i class="fa-solid fa-passport text-base mb-1"></i>
           <span class="text-[10px] font-bold">必備</span>
         </button>
-        <button onclick="switchPlanCategory('換洗衣物')" data-plan-cat="換洗衣物" class="plan-icon-btn flex flex-col items-center p-2 rounded-xl text-gray-400 btn-press min-w-[55px]">
+        <button onclick="switchPlanCategory('換洗衣物')" class="plan-icon-btn flex flex-col items-center p-2 rounded-xl text-gray-400 btn-press min-w-[55px]">
           <i class="fa-solid fa-shirt text-base mb-1"></i>
           <span class="text-[10px] font-bold">衣物</span>
         </button>
-        <button onclick="switchPlanCategory('隨身用品')" data-plan-cat="隨身用品" class="plan-icon-btn flex flex-col items-center p-2 rounded-xl text-gray-400 btn-press min-w-[55px]">
+        <button onclick="switchPlanCategory('隨身用品')" class="plan-icon-btn flex flex-col items-center p-2 rounded-xl text-gray-400 btn-press min-w-[55px]">
           <i class="fa-solid fa-bag-shopping text-base mb-1"></i>
           <span class="text-[10px] font-bold">隨身</span>
         </button>
-        <button onclick="switchPlanCategory('3C設備')" data-plan-cat="3C設備" class="plan-icon-btn flex flex-col items-center p-2 rounded-xl text-gray-400 btn-press min-w-[55px]">
+        <button onclick="switchPlanCategory('3C設備')" class="plan-icon-btn flex flex-col items-center p-2 rounded-xl text-gray-400 btn-press min-w-[55px]">
           <i class="fa-solid fa-mobile-screen text-base mb-1"></i>
           <span class="text-[10px] font-bold">3C</span>
         </button>
-        <button onclick="switchPlanCategory('待辦事項')" data-plan-cat="待辦事項" class="plan-icon-btn flex flex-col items-center p-2 rounded-xl text-gray-400 btn-press min-w-[55px]">
+        <button onclick="switchPlanCategory('待辦事項')" class="plan-icon-btn flex flex-col items-center p-2 rounded-xl text-gray-400 btn-press min-w-[55px]">
           <i class="fa-solid fa-list-check text-base mb-1"></i>
           <span class="text-[10px] font-bold">待辦</span>
         </button>
-        <button onclick="switchPlanCategory('其他')" data-plan-cat="其他" class="plan-icon-btn flex flex-col items-center p-2 rounded-xl text-gray-400 btn-press min-w-[55px]">
+        <button onclick="switchPlanCategory('其他')" class="plan-icon-btn flex flex-col items-center p-2 rounded-xl text-gray-400 btn-press min-w-[55px]">
           <i class="fa-solid fa-ellipsis text-base mb-1"></i>
           <span class="text-[10px] font-bold">其他</span>
         </button>
@@ -731,7 +707,7 @@
               <div class="flex items-center gap-1.5"><button onclick="event.stopPropagation();deleteScheduleItemById('${item.id}')" class="text-gray-300 hover:text-red-500 text-xs p-1"><i class="fa-solid fa-trash"></i></button></div>
             </div>
             <div id="detail-${item.id}" class="accordion-content hidden pt-3 border-t border-dashed space-y-1.5 text-xs">
-              ${getScheduleImage(item)?`<img src="${getScheduleImage(item)}" class="recommend-img" alt="${item.title} 照片" onerror="this.style.display=\'none\'">`:(item.wiki?`<img class="recommend-img schedule-wiki-img" data-wiki="${item.wiki}" alt="${item.title} 照片">`:'')}
+              ${item.image?`<img src="${item.image}" class="recommend-img" alt="${item.title} 照片">`:(item.wiki?`<img class="recommend-img schedule-wiki-img" data-wiki="${item.wiki}" alt="${item.title} 照片">`:'')}
               ${item.intro?`<p class="text-gray-600 leading-relaxed"><i class="fa-solid fa-circle-info text-skyBlue mr-1"></i>${item.intro}</p>`:''}
               <div><span class="font-bold text-wood"><i class="fa-solid fa-map-location-dot text-torii mr-1"></i>Google Map：</span><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address||item.title)}" target="_blank" class="text-skyBlue underline font-bold">點擊開啟地圖</a></div>
               ${item.note?`<div><span class="font-bold text-wood"><i class="fa-solid fa-pen-to-square text-amber-500 mr-1"></i>備註：</span><span class="text-gray-600">${item.note}</span></div>`:''}
@@ -1118,10 +1094,11 @@
     function switchPlanCategory(cat) {
       activePlanCategory = cat;
       document.querySelectorAll('.plan-icon-btn').forEach(b => {
-        const active = b.dataset.planCat === cat;
-        b.className = active
-          ? 'plan-icon-btn active flex flex-col items-center p-2 rounded-xl text-skyBlue bg-skyLight btn-press min-w-[55px]'
-          : 'plan-icon-btn flex flex-col items-center p-2 rounded-xl text-gray-400 bg-transparent btn-press min-w-[55px]';
+        if (b.innerText.includes(cat)) {
+          b.className = 'plan-icon-btn active flex flex-col items-center p-2 rounded-xl text-skyBlue btn-press min-w-[55px]';
+        } else {
+          b.className = 'plan-icon-btn flex flex-col items-center p-2 rounded-xl text-gray-400 btn-press min-w-[55px]';
+        }
       });
       renderPlanChecklist();
     }
@@ -1174,14 +1151,14 @@
 
     // ---------------- 頂部地圖、優惠券、備選景點 ----------------
     
-    // ===== 航程住宿旅遊憑證（PDF／圖片，IndexedDB 本裝置保存） =====
+    // ===== 航程住宿 PDF 憑證（IndexedDB，本裝置保存） =====
     const BOOKING_PDF_DB = 'tokyo-booking-pdfs-v1';
     const BOOKING_PDF_STORE = 'pdfs';
 
     function openBookingPdfDB(){
       return new Promise((resolve,reject)=>{
         const req=indexedDB.open(BOOKING_PDF_DB,1);
-        req.onupgradeneeded=()=>{
+        req.onupgradeneeded=()=> {
           const db=req.result;
           if(!db.objectStoreNames.contains(BOOKING_PDF_STORE)){
             const store=db.createObjectStore(BOOKING_PDF_STORE,{keyPath:'id',autoIncrement:true});
@@ -1199,7 +1176,7 @@
         const tx=db.transaction(BOOKING_PDF_STORE,'readwrite');
         tx.objectStore(BOOKING_PDF_STORE).add({
           name:file.name,
-          type:file.type || (file.name.toLowerCase().endsWith('.pdf')?'application/pdf':'image/*'),
+          type:file.type||'application/pdf',
           size:file.size,
           createdAt:Date.now(),
           blob:file
@@ -1212,15 +1189,15 @@
     async function getBookingPdfs(){
       const db=await openBookingPdfDB();
       return new Promise((resolve,reject)=>{
-        const req=db.transaction(BOOKING_PDF_STORE,'readonly').objectStore(BOOKING_PDF_STORE).getAll();
+        const tx=db.transaction(BOOKING_PDF_STORE,'readonly');
+        const req=tx.objectStore(BOOKING_PDF_STORE).getAll();
         req.onsuccess=()=>resolve((req.result||[]).sort((a,b)=>b.createdAt-a.createdAt));
         req.onerror=()=>reject(req.error);
       });
     }
 
-    async function deleteBookingPdf(id,event){
-      if(event)event.stopPropagation();
-      if(!confirm('確定要刪除此旅遊憑證嗎？')) return;
+    async function deleteBookingPdf(id){
+      if(!confirm('確定要刪除此 PDF 憑證嗎？')) return;
       const db=await openBookingPdfDB();
       await new Promise((resolve,reject)=>{
         const tx=db.transaction(BOOKING_PDF_STORE,'readwrite');
@@ -1232,90 +1209,62 @@
     }
 
     function formatPdfSize(bytes){
-      if(bytes<1024)return bytes+' B';
-      if(bytes<1024*1024)return (bytes/1024).toFixed(1)+' KB';
+      if(bytes<1024) return bytes+' B';
+      if(bytes<1024*1024) return (bytes/1024).toFixed(1)+' KB';
       return (bytes/1024/1024).toFixed(1)+' MB';
     }
 
-    function isBookingImage(item){
-      return (item.type||'').startsWith('image/') || /\.(jpg|jpeg|png|webp|gif|heic|heif)$/i.test(item.name||'');
-    }
-
-    async function openBookingPdf(id,event){
-      if(event)event.stopPropagation();
+    async function openBookingPdf(id){
       const db=await openBookingPdfDB();
       const item=await new Promise((resolve,reject)=>{
-        const req=db.transaction(BOOKING_PDF_STORE,'readonly').objectStore(BOOKING_PDF_STORE).get(id);
+        const tx=db.transaction(BOOKING_PDF_STORE,'readonly');
+        const req=tx.objectStore(BOOKING_PDF_STORE).get(id);
         req.onsuccess=()=>resolve(req.result);
         req.onerror=()=>reject(req.error);
       });
-      if(!item)return;
+      if(!item) return;
       const url=URL.createObjectURL(item.blob);
       window.open(url,'_blank');
       setTimeout(()=>URL.revokeObjectURL(url),60000);
     }
 
-    function toggleBookingCredentialList(){
-      const panel=document.getElementById('booking-pdf-panel');
-      const icon=document.getElementById('booking-file-chevron');
-      if(!panel)return;
-      const willOpen=panel.classList.contains('hidden');
-      panel.classList.toggle('hidden');
-      if(icon){
-        icon.classList.toggle('fa-chevron-down',!willOpen);
-        icon.classList.toggle('fa-chevron-up',willOpen);
-      }
-    }
-
     async function renderBookingPdfs(){
       const box=document.getElementById('booking-pdf-list');
-      const count=document.getElementById('booking-file-count');
-      if(!box)return;
+      if(!box) return;
       try{
         const items=await getBookingPdfs();
-        if(count)count.innerText=`上傳${items.length}檔`;
         if(!items.length){
-          box.innerHTML='<div class="text-[9px] text-gray-400 text-center py-2">尚未上傳旅遊憑證</div>';
+          box.innerHTML='<div class="text-[9px] text-gray-400 text-center py-2">尚未上傳 PDF 憑證</div>';
           return;
         }
         box.innerHTML=items.map(x=>`
           <div class="p-3 rounded-xl border border-sand bg-paper flex items-center gap-3">
-            <button type="button" onclick="openBookingPdf(${x.id},event)" class="flex items-center gap-3 min-w-0 flex-1 text-left">
-              <div class="w-9 h-9 rounded-xl ${isBookingImage(x)?'bg-skyLight text-skyBlue':'bg-red-50 text-red-500'} flex items-center justify-center shrink-0">
-                <i class="fa-solid ${isBookingImage(x)?'fa-image':'fa-file-pdf'}"></i>
-              </div>
-              <div class="min-w-0 flex-1">
-                <div class="font-bold text-[11px] truncate">${x.name}</div>
-                <div class="text-[9px] text-gray-400 mt-0.5">${formatPdfSize(x.size)}</div>
-              </div>
+            <div class="w-9 h-9 rounded-xl bg-red-50 text-red-500 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-file-pdf"></i>
+            </div>
+            <button type="button" onclick="openBookingPdf(${x.id})" class="min-w-0 flex-1 text-left">
+              <div class="font-bold text-[11px] truncate">${x.name}</div>
+              <div class="text-[9px] text-gray-400 mt-0.5">${formatPdfSize(x.size)}</div>
             </button>
-            <button type="button" onclick="deleteBookingPdf(${x.id},event)" class="w-8 h-8 rounded-lg text-gray-400 hover:text-red-500 shrink-0" aria-label="刪除憑證">
+            <button type="button" onclick="deleteBookingPdf(${x.id})" class="w-8 h-8 rounded-lg text-gray-400 hover:text-red-500 shrink-0" aria-label="刪除 PDF">
               <i class="fa-solid fa-trash-can"></i>
             </button>
           </div>`).join('');
       }catch(e){
-        if(count)count.innerText='上傳0檔';
-        box.innerHTML='<div class="text-[9px] text-red-400">旅遊憑證讀取失敗</div>';
+        box.innerHTML='<div class="text-[9px] text-red-400">PDF 憑證讀取失敗</div>';
       }
     }
 
     function initBookingPdfUpload(){
       const input=document.getElementById('booking-pdf-input');
-      if(!input || input.dataset.bound==='1')return;
+      if(!input || input.dataset.bound==='1') return;
       input.dataset.bound='1';
-      input.addEventListener('change',async()=>{
-        const files=[...input.files].filter(f=>
-          f.type==='application/pdf' ||
-          f.type.startsWith('image/') ||
-          /\.(pdf|jpg|jpeg|png|webp|gif|heic|heif)$/i.test(f.name)
-        );
-        if(!files.length){
-          alert('請選擇 PDF 或圖片檔。');
-          return;
-        }
+      input.addEventListener('change', async ()=>{
+        const files=[...input.files].filter(f=>f.type==='application/pdf'||f.name.toLowerCase().endsWith('.pdf'));
+        if(!files.length) return;
         for(const file of files){
-          try{await saveBookingPdf(file);}
-          catch(e){alert('憑證上傳失敗：'+file.name);}
+          try{ await saveBookingPdf(file); }
+          catch(e){ alert('PDF 上傳失敗：'+file.name); }
         }
         input.value='';
         renderBookingPdfs();
@@ -1323,20 +1272,7 @@
       renderBookingPdfs();
     }
 
-    document.addEventListener('DOMContentLoaded',initBookingPdfUpload);
-
-    const scheduleImageMap = {"APA 淺草田原町站前":"./images/schedule/17_APA.png","東京都廳觀景台":"./images/schedule/16_img.png","思出橫丁":"./images/schedule/15_img.png","歌舞伎町":"./images/schedule/14_img.png","東京車站夜景":"./images/schedule/13_img.png","KITTE 丸之內":"./images/schedule/12_KITTE.png","新丸之內大樓 (Shin-Marunouchi Building)":"./images/schedule/11_img.png","JIMTOF":"./images/schedule/10_JIMTOF.png","池袋寶可夢中心":"./images/schedule/09_img.png","陽光水族館":"./images/schedule/08_img.png","Sunshine 60 展望台":"./images/schedule/07_Sunshine_60.png","太陽城購物中心 (Sunshine City)":"./images/schedule/05_img.png","小網神社":"./images/schedule/04_img.png","上野動物園":"./images/schedule/03_img.png","阿美橫町":"./images/schedule/02_img.png","秋葉原電器街":"./images/schedule/01_img.png","明治神宮":"./images/schedule/55_img.png","澀谷十字路口 (Shibuya Scramble Crossing)":"./images/schedule/54_img.png","澀谷寶可夢中心":"./images/schedule/53_img.png","SHIBUYA SKY (澀谷天空展望台)":"./images/schedule/52_SHIBUYA_SKY.png","忠犬八公像":"./images/schedule/51_img.png","澀谷 3D 秋田犬電視牆":"./images/schedule/50_3D.png","新倉山淺間公園":"./images/schedule/49_img.png","餺飥不動 東戀路店":"./images/schedule/48_img.png","大石公園":"./images/schedule/47_img.png","河口湖富士山全景纜車":"./images/schedule/46_img.png","淺草文化觀光中心":"./images/schedule/45_img.png","淺草寺":"./images/schedule/44_img.png","淺草唐吉訶德":"./images/schedule/43_img.png","東京晴空塔":"./images/schedule/42_img.png","合羽橋道具街":"./images/schedule/41_img.png","新浦安車站":"./images/schedule/40_img.png","1955 東京灣星野飯店":"./images/schedule/39_1955.png","AEON STYLE 新浦安":"./images/schedule/38_AEON_STYLE.png","東京迪士尼海洋":"./images/schedule/37_img.png","安娜與雪之女王冒險":"./images/schedule/36_img.png","樂佩公主天燈盛會":"./images/schedule/35_img.png","小飛俠夢幻島歷險記":"./images/schedule/34_img.png","翱翔：夢幻奇航":"./images/schedule/33_img.png","驚魂古塔":"./images/schedule/32_img.png","玩具總動員瘋狂遊戲屋":"./images/schedule/31_img.png","海底兩萬哩":"./images/schedule/30_img.png","Believe! ~夢幻輝航~":"./images/schedule/29_Believe.png","東京迪士尼樂園":"./images/schedule/28_img.png","美女與野獸「城堡奇緣」":"./images/schedule/27_img.png","杯麵快樂轉轉塔":"./images/schedule/26_img.png","巨雷山":"./images/schedule/25_img.png","小熊維尼獵蜜記":"./images/schedule/24_img.png","幽靈客棧":"./images/schedule/23_img.png","小小世界":"./images/schedule/22_img.png","日間遊行：迪士尼眾彩興邦":"./images/schedule/21_img.png","夜間遊行及城堡秀":"./images/schedule/20_img.png","利木津巴士":"./images/schedule/19_img.png","成田機場":"./images/schedule/18_img.png","太陽城購物中心":"./images/schedule/05_img.png","NAMJATOWN":"./images/schedule/06_NAMJATOWN.png","新丸之內大樓":"./images/schedule/11_img.png","APA淺草田原町站前":"./images/schedule/17_APA.png","澀谷十字路口":"./images/schedule/54_img.png","成田機場 (Narita International Airport)":"./images/schedule/18_img.png","Narita International Airport":"./images/schedule/18_img.png","APA 飯店 淺草田原町站前":"./images/schedule/17_APA.png","NAMJATOWN (南夢宮主題樂園)":"./images/schedule/06_NAMJATOWN.png"};
-    function getScheduleImage(item){
-      if(item && item.image) return item.image;
-      if(!item) return '';
-      const title=(item.title||'').trim();
-      if(scheduleImageMap[title]) return scheduleImageMap[title];
-      const simple=title
-        .replace(/\s*\([^)]*\)\s*$/,'')
-        .replace(/^APA\s*飯店\s*/,'APA ')
-        .trim();
-      return scheduleImageMap[simple]||'';
-    }
+    document.addEventListener('DOMContentLoaded', initBookingPdfUpload);
 
     const coupons = [
       {name:"松本清",note:'點圖片可放大查看優惠券',image:"./images/coupons/coupon_01.webp"},
@@ -1358,39 +1294,24 @@
     function openCouponModal(){
       const box=document.getElementById('coupon-list');
       box.innerHTML=coupons.map(c=>c.image
-        ? `<button type="button" onclick="openCouponImage('${c.image}','${c.name.replace(/'/g,"\\'")}')" class="w-full p-3 rounded-2xl border border-sand bg-paper flex items-center justify-between gap-3 text-left btn-press">
-             <div class="flex items-center gap-3 min-w-0">
-               <div class="w-10 h-10 shrink-0 rounded-xl bg-sakuraLight text-torii flex items-center justify-center">
-                 <i class="fa-solid fa-ticket"></i>
-               </div>
-               <div class="min-w-0">
-                 <div class="font-bold text-xs text-wood truncate">${c.name}</div>
-                 <div class="text-[9px] text-gray-400 mt-1">點選查看優惠券</div>
-               </div>
-             </div>
-             <i class="fa-solid fa-chevron-right text-gray-300 text-xs"></i>
-           </button>`
+        ? `<div class="p-3 rounded-2xl border border-sand bg-paper">
+             <div class="font-bold text-xs mb-2">${c.name}</div>
+             <img src="${c.image}" alt="${c.name} 優惠券" onclick="openCouponImage('${c.image}')" class="w-full max-h-72 object-contain rounded-xl bg-white cursor-zoom-in">
+             <div class="text-[9px] text-gray-400 mt-2">${c.note}</div>
+           </div>`
         : `<div class="p-3 rounded-2xl border border-sand bg-paper flex items-center justify-between gap-2">
              <div><div class="font-bold text-xs">${c.name}</div><div class="text-[9px] text-gray-400 mt-1">${c.note}</div></div>
              <a href="${c.url}" target="_blank" rel="noopener" class="px-3 py-2 rounded-xl bg-sakuraLight text-torii text-[10px] font-bold btn-press">開啟</a>
            </div>`).join('');
       document.getElementById('coupon-modal').classList.remove('hidden');
     }
-
-    function openCouponImage(src,name){
-      const old=document.getElementById('coupon-image-viewer');
-      if(old)old.remove();
+    function openCouponImage(src){
       const modal=document.createElement('div');
-      modal.id='coupon-image-viewer';
-      modal.className='fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center p-3 cursor-pointer';
-      modal.innerHTML=`
-        <div class="text-white text-xs font-bold mb-3">${name||'優惠券'}</div>
-        <img src="${src}" class="max-w-full max-h-[84vh] object-contain rounded-xl bg-white shadow-2xl" alt="${name||'優惠券'}">
-        <div class="text-white/70 text-[10px] mt-3">點一下關閉</div>`;
-      modal.addEventListener('click',()=>modal.remove());
+      modal.className='fixed inset-0 z-[100] bg-black/85 flex items-center justify-center p-3';
+      modal.innerHTML=`<button onclick="this.parentElement.remove()" class="absolute top-5 right-5 text-white text-2xl"><i class="fa-solid fa-xmark"></i></button><img src="${src}" class="max-w-full max-h-[90vh] object-contain rounded-xl bg-white">`;
+      modal.onclick=(e)=>{if(e.target===modal)modal.remove();};
       document.body.appendChild(modal);
     }
-
     function closeCouponModal(){document.getElementById('coupon-modal').classList.add('hidden');}
 
     function dayRouteUrl(items){
